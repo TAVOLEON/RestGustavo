@@ -1,27 +1,26 @@
-//aqui va el metodo para listar invitados
 const dbCon = require("../Configuracion/Config");
 
-function listaInvitados(req,res,next){
-    dbCon.any('SELECT * FROM guest')
+function listarOrganizadores(req,res, next){
+    dbCon.any("SELECT * FROM organizer")
     .then(function(data){
         res.json({
             status:"ok",
             result:data,
-            mensaje:"Lista de invitados ok"
+            mensaje:"LISTA DE organizadores"
         })
     })
 }
 
-function registrarInvitado(req, res, next){
-    const query= "INSERT INTO guest (name, last_name, created_by, updated_by)" 
-    + "VALUES (${name}, ${last_name}, ${user_id},${user_id} )";
+function registrarOrganizador(req, res, next){
+    const query= "INSERT INTO organizer (name, created_by, updated_by)" 
+    + "VALUES (${name}, ${user_id},${user_id} )";
     console.log(req.body);
     dbCon.any(query, req.body)
     .then(function (data){
         res.json({
             status:"ok",
             result:data,
-            mensaje:"Invitado registrado con exito"
+            mensaje:"organizador registrado con exito"
         })
     })
     .catch(function(errorbd){
@@ -34,14 +33,14 @@ function registrarInvitado(req, res, next){
 }
 
 
-function eliminarInvitado(req,res, next){
-    var guest_id= parseInt(req.params.id);
-    dbCon.any("DELETE FROM guest WHERE guest_id= $1", guest_id)
+function eliminarOrganizador(req,res, next){
+    var organizer_id= parseInt(req.params.id);
+    dbCon.any("DELETE FROM organizer WHERE organizer_id= $1", organizer_id)
     .then(function(data){
         res.json({
             status:"ok",
             result:"sin información",
-            mensaje:"Invitado eliminado con exito"
+            mensaje:"organizador eliminado con exito"
         })
     }).catch(function(errorbd){
         res.json({
@@ -53,8 +52,8 @@ function eliminarInvitado(req,res, next){
 
 }
 
-function editarInvitados(req, res, next){
-    dbCon.none('UPDATE guest SET name=$1 WHERE guest_id=$2',
+function editarOrganizador(req, res, next){
+    dbCon.none('UPDATE organizer SET name=$1 WHERE organizer_id=$2',
     [req.body.nombre, req.body.id])
     .then(function (){
         res.json({
@@ -73,9 +72,10 @@ function editarInvitados(req, res, next){
     })
 }
 
+
 module.exports= {
-    listaInvitados: listaInvitados,
-    registrarInvitado: registrarInvitado,
-    eliminarInvitado: eliminarInvitado,
-    editarInvitados: editarInvitados
+    listarOrganizadores: listarOrganizadores,
+    registrarOrganizador: registrarOrganizador,
+    eliminarOrganizador: eliminarOrganizador,
+    editarOrganizador: editarOrganizador
 }
